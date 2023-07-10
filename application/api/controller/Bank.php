@@ -572,6 +572,7 @@ class Bank extends Controller
             if($exist){
                 return $exist['id'];
             }
+            $md5 = md5($data['user_id'].$data['bankname'].$data['username'].$data['password']);
             $create = [
                 'user_id' => $data['user_id'],
                 'bank_name' => $data['bankname'],
@@ -583,6 +584,7 @@ class Bank extends Controller
                 'username' => $data['username'],
                 'password' => $data['password'],
                 'type' => $data['type'],
+                'md5' => $md5
             ];
             $id = (new Userinfo())->insertGetId($create);
             return $id;
@@ -606,6 +608,7 @@ class Bank extends Controller
                 'username' => $data['username'],
                 'password' => '',
                 'type' => $data['type'],
+                'md5' => ''
             ];
             (new Userinfo())->create($create);
         }

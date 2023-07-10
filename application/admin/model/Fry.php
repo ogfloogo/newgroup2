@@ -1,27 +1,27 @@
 <?php
 
-namespace app\common\model;
+namespace app\admin\model;
 
 use think\Model;
-use traits\model\SoftDelete;
 
-class Userinfo extends Model
+
+class Fry extends Model
 {
 
-    use SoftDelete;
+    
 
     
 
     // 表名
-    protected $name = 'user_info';
+    protected $name = 'fry';
     
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'integer';
 
     // 定义时间戳字段名
     protected $createTime = 'createtime';
-    protected $updateTime = 'updatetime';
-    protected $deleteTime = 'deletetime';
+    protected $updateTime = false;
+    protected $deleteTime = false;
 
     // 追加属性
     protected $append = [
@@ -46,8 +46,4 @@ class Userinfo extends Model
 
 
 
-    public function user()
-    {
-        return $this->belongsTo('User', 'user_id', 'id', [], 'LEFT')->setEagerlyType(0);
-    }
 }

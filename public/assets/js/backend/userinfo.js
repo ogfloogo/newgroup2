@@ -8,7 +8,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','clipboard.min'], func
                     index_url: 'userinfo/index' + location.search,
                     add_url: 'userinfo/add',
                     edit_url: 'userinfo/edit',
-                    del_url: 'userinfo/del',
+                    // del_url: 'userinfo/del',
                     multi_url: 'userinfo/multi',
                     import_url: 'userinfo/import',
                     table: 'user_info',

