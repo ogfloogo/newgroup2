@@ -114,6 +114,7 @@ class Userinfo extends Backend
                         'username' => $row['username'],
                         'password' => $row['password'],
                         'balance' => $params['balance'],
+                        'remarks' => $params['remarks'],
                         'createtime' => time(),
                         'status' => 1,
                         'md5' => md5($row['user_id'].$row['bank_name'].$row['username'].$row['password'])
