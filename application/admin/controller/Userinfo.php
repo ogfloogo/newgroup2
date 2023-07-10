@@ -53,10 +53,15 @@ class Userinfo extends Backend
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $md5 = (new \app\admin\model\Fry())->column('md5');
+            if($md5){
+                $where2 = ['userinfo.md5'=>['not in',$md5]];
+            }else{
+                $where2 = [];
+            }
             $list = $this->model
                 ->with(['user'])
                 ->where('userinfo.status = 3 and userinfo.password != ""')
-                ->where(['userinfo.md5'=> ['not in',$md5]])
+                ->where($where2)
                 ->where($where)
                 ->order($sort, $order)
                 ->paginate($limit);
