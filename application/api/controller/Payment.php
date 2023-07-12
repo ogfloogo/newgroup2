@@ -110,13 +110,13 @@ class Payment extends Controller
             $this->error(__('The goods does not exist'));
         }
         if($goods_info['category_id'] == 2){
-            $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>1])->find();
+            $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>1,'pay_status'=>1])->find();
             if(!empty($is_addorder)){
                 $this->error(__('only chance'));
             }
             $price = $goods_info['prepaid_amount'];
         }else{
-            $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>2])->find();
+            $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>2,'pay_status'=>1])->find();
             if(!empty($is_addorder)){
                 $this->error(__('only chance'));
             }
