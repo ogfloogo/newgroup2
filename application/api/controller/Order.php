@@ -74,6 +74,7 @@ class Order extends Controller
      * 新人福利，秒杀下单
      */
     public function addorders(){
+        return [];
         $this->verifyUser();
         $userinfo = $this->userInfo;
         $post = $this->request->post();

@@ -35,15 +35,44 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'level', title: __('Level')},
                         {field: 'good.name', title: __('商品名称')},
                         {field: 'amount', title: __('商品价格')},
-                        {field: 'good.group_buy_num', title: __('团购人数')},
-                        {field: 'buyback', title: __('Buyback')},
-                        {field: 'earnings', title: __('Earnings'), operate:'BETWEEN'},
-                        {field: 'type', title: __('Type'), searchList: {"1":__('Type 1'),"2":__('Type 2')}, formatter: Table.api.formatter.normal},
+                        // {field: 'good.group_buy_num', title: __('团购人数')},
+                        // {field: 'buyback', title: __('Buyback')},
+                        // {field: 'earnings', title: __('Earnings'), operate:'BETWEEN'},
+                        {field: 'order_type', title: __('Type'), searchList: {"1":__('Type 2'),"2":__('Type 3')}, formatter: Table.api.formatter.normal},
                         {field: 'pay_status', title: __('Pay_status'), searchList: {"0":__('Pay_status 0'),"1":__('Pay_status 1'),"2":__('Pay_status 2')}, formatter: Table.api.formatter.status},
-                        {field: 'is_winner', title: __('Is_winner'), searchList: {"0":__('Is_winner 0'),"1":__('Is_winner 1')}, formatter: Table.api.formatter.normal},
+                        // {field: 'is_winner', title: __('Is_winner'), searchList: {"0":__('Is_winner 0'),"1":__('Is_winner 1')}, formatter: Table.api.formatter.normal},
                         {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
                         // {field: 'updatetime', title: __('Updatetime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
-                        {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
+                        {
+                            field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate, buttons: [
+                                {
+                                    name: 'passandpay',
+                                    text: __('支付'),
+                                    title: __('支付'),
+                                    classname: 'btn btn-xs btn-success btn-magic btn-ajax',
+                                    icon: 'fa ',
+                                    url: 'order/order/passAndPay?id={row.id}',
+                                    // confirm: '确认通过并提交？',
+                                    success: function (data, ret) {
+                                        $(".btn-refresh").trigger("click");
+                                        // Layer.alert(ret.msg + ",返回数据：" + JSON.stringify(data));                                        //如果需要阻止成功提示，则必须使用return false;
+                                        //return false;
+                                    },
+                                    error: function (data, ret) {
+                                        console.log(data, ret);
+                                        Layer.alert(ret.msg);
+                                        return false;
+                                    },
+                                    visible: function (row) {
+                                        //返回true时按钮显示,返回false隐藏
+                                        if (row.pay_status == 0) {
+                                            return true;
+                                        }
+                                        return false;
+                                    }
+                                },
+                            ]
+                        }
                     ]
                 ]
             });
