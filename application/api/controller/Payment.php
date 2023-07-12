@@ -109,17 +109,19 @@ class Payment extends Controller
         if(!$goods_info){
             $this->error(__('The goods does not exist'));
         }
-        if($goods_info['category_id'] == 2){
+        if($goods_info['category_id'] == 3){
             $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>1,'pay_status'=>1])->find();
+            if(!empty($is_addorder)){
+                $this->error(__('only chance'));
+            }
+            $price = $goods_info['price'];
+        }elseif($goods_info['category_id'] == 2){
+            $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>2,'pay_status'=>1])->find();
             if(!empty($is_addorder)){
                 $this->error(__('only chance'));
             }
             $price = $goods_info['prepaid_amount'];
         }else{
-            $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>2,'pay_status'=>1])->find();
-            if(!empty($is_addorder)){
-                $this->error(__('only chance'));
-            }
             $price = $goods_info['price'];
         }
         $post['price'] = $price;
@@ -136,11 +138,11 @@ class Payment extends Controller
         }
         $info = (new Account())->where(['id'=>$channel_info['id']])->find();
         $bank_info = (new Internetbank())->where(['id'=>$info['bank_id']])->find();
-        $returnary['amount'] = $price;
         $returninfo['order_id'] = $return['order_id'];
         $returnary['bankname'] = $bank_info['name'];
-        $returnary['bankimg'] = format_image($bank_info['image']);
+//        $returnary['bankimg'] = format_image($bank_info['image']);
         $returnary['account'] = $info['bank_card'];
+        $returnary['amount'] = $price;
         $returninfo['display_key'] = $returnary;
         $this->success(__('The request is successful'), $returninfo);
     }
