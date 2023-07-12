@@ -16,7 +16,7 @@ use function EasyWeChat\Kernel\Support\get_client_ip;
  */
 class Payment extends Model
 {
-    protected $name = 'user_recharge';
+    protected $name = 'order';
 
     /**
      * 代收
@@ -113,5 +113,46 @@ class Payment extends Model
             $list[$key]["paytime"] = format_time($value['paytime']);
         }
         return $list;
+    }
+
+    public function selftopup($post, $userinfo, $channel_info, $goods_info)
+    {
+        //代收订单号
+        $order_id = $this->createorder();
+        while ($this->where(['order_id' => $order_id])->find()) {
+            $order_id = $this->createorder();
+        }
+        if($goods_info['category_id'] == 2){
+            $type = 1;
+        }else{
+            $type = 2;
+        }
+        //赠送金额
+        //$givemoney = $this->givemoney($post['price']);
+        //事务开启
+
+        Db::startTrans();
+        try {
+            $insert = [
+                'user_id' => $userinfo['id'], //用户ID
+                'amount' => $post['price'], //下单金额
+                'buyback' => '',
+                'order_id' => $order_id, //订单号
+                'level' => $userinfo['level'], //用户等级
+                'good_id' => $post['goods_id'], //商品ID
+                'order_type' => $type,
+                'createtime' => time(),
+                'updatetime' => time(),
+                "agent_id" => intval($userinfo['agent_id']),
+
+            ];
+            $this->insert($insert);
+            Db::commit();
+            return ['code'=>1,'order_id'=>$order_id];
+        } catch (Exception $e) {
+            Log::mylog('用户充值', $e, 'payment');
+            Db::rollback();
+            return false;
+        }
     }
 }

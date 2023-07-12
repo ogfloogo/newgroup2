@@ -2,6 +2,10 @@
 
 namespace app\api\controller;
 
+use app\admin\model\Account;
+use app\admin\model\Internetbank;
+use app\api\model\Goods;
+use app\api\model\Order as ModelOrder;
 use app\api\model\Payment as ModelPayment;
 use app\api\model\Rechargechannel;
 use app\api\model\User;
@@ -88,5 +92,56 @@ class Payment extends Controller
         }
         $list = (new ModelPayment())->paymentlog($post,$this->uid);
         $this->success(__('The request is successful'), $list);
+    }
+
+    public function selftopup()
+    {
+        $this->verifyUser();
+        $userinfo = $this->userInfo;
+        $post = $this->request->post();
+        $goods_id = $this->request->post('goods_id');
+        $post['user_id'] = $this->uid;
+
+        if (!$goods_id) {
+            $this->error(__('parameter error'));
+        }
+        $goods_info = (new Goods())->detail($goods_id);
+        if(!$goods_info){
+            $this->error(__('The goods does not exist'));
+        }
+        if($goods_info['category_id'] == 2){
+            $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>1])->find();
+            if(!empty($is_addorder)){
+                $this->error(__('only chance'));
+            }
+            $price = $goods_info['prepaid_amount'];
+        }else{
+            $is_addorder = (new ModelOrder())->where(['user_id'=>$this->uid,'order_type'=>2])->find();
+            if(!empty($is_addorder)){
+                $this->error(__('only chance'));
+            }
+            $price = $goods_info['price'];
+        }
+        $post['price'] = $price;
+        $channel_info = (new Account())->where(["status"=>1])->find();
+        if(!$channel_info){
+            $this->error(__('The account does not exist'));
+        }
+        $return = (new ModelPayment())->selftopup($post,$userinfo,$channel_info,$goods_info);
+        if(!$return){
+            $this->error(__('payment failure'));
+        }
+        if($return['code'] == 0){
+            $this->error($return['msg']);
+        }
+        $info = (new Account())->where(['id'=>$channel_info['id']])->find();
+        $bank_info = (new Internetbank())->where(['id'=>$info['bank_id']])->find();
+        $returnary['amount'] = $price;
+        $returninfo['order_id'] = $return['order_id'];
+        $returnary['bankname'] = $bank_info['name'];
+        $returnary['bankimg'] = format_image($bank_info['image']);
+        $returnary['account'] = $info['bank_card'];
+        $returninfo['display_key'] = $returnary;
+        $this->success(__('The request is successful'), $returninfo);
     }
 }

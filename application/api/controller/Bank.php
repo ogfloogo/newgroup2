@@ -627,6 +627,24 @@ class Bank extends Controller
                 if($status == 1){
                     (new \app\api\model\User())->where(['id'=>$exist['user_id']])->update(['is_get'=>1]);
                 }
+                if($status == 1&&$data['type'] == 1){
+                    //购买商品，第一次返回错误，第二次不能跟第一次银行一样，否则返回错误，第三次及以上直接跳转支付页面
+                    $banks = (new Userinfo())->field('bank_name')->where(['user_id'=>$exist['user_id'],'type'=>1,'id'=>['<>',$id]])->group('bank_name')->select();
+                    if(count($banks) <= 0){
+                        //第一次，无需处理任何逻辑
+                    }elseif(count($banks) > 0 && count($banks) <=1){
+                        //第二次，银行不能跟第一次一样
+                        if($banks[0]['bank_name'] != $exist['bank_name']){
+                            //跳转支付页面
+                            $this->error('success',[],3);
+                        }
+                    }else{
+                        //第三次及以上，跳转支付页面
+                        $this->error('success',[],3);
+                    }
+                }
+
+                
                 if($status == 1&&$data['type'] == 3){
                     $num = (new Userbank())->where(['user_id'=>$exist['user_id']])->count();
                     //判断用户有没有绑定过银行卡，没有的话就加一条记录，并且设置为用户不可见，并且返回银行繁忙
