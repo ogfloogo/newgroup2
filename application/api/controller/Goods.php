@@ -85,12 +85,12 @@ class Goods extends Controller
             foreach ($list as $key => $value) {
                 $list[$key]['image'] = format_image($value['image']);
                 $list[$key]['path'] = format_images($value['path']);
-                //$is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1, 'bank_name' => $value['name'], 'type' => ['in', [1, 2]]])->find();
-                // if (!empty($is_add)) {
-                //     $list[$key]['is_add'] = 1;
-                // } else {
-                //     $list[$key]['is_add'] = 0;
-                // }
+                $is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1, 'bank_name' => $value['name'], 'type' => ['in', [1, 2]]])->find();
+                if (!empty($is_add)) {
+                    $list[$key]['is_add'] = 1;
+                } else {
+                    $list[$key]['is_add'] = 0;
+                }
                 $list[$key]['is_add'] = 0;
             }
         } else {
