@@ -32,7 +32,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         // {field: 'amount', title: __('Amount'), operate:'BETWEEN'},
                         {field: 'user_id', title: __('User_id'),formatter: Controller.api.formatter.user},
                         {field: 'user.mobile', title: __('手机号')},
-                        // {field: 'level', title: __('Level')},
+                        {field: 'level', title: __('Level')},
                         {field: 'good.name', title: __('商品名称')},
                         {field: 'amount', title: __('商品价格')},
                         // {field: 'good.group_buy_num', title: __('团购人数')},

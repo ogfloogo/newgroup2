@@ -122,10 +122,12 @@ class Payment extends Model
         while ($this->where(['order_id' => $order_id])->find()) {
             $order_id = $this->createorder();
         }
-        if($goods_info['category_id'] == 2){
+        if($goods_info['category_id'] == 3){
             $type = 1;
-        }else{
+        }elseif($goods_info['category_id'] == 2){
             $type = 2;
+        }else{
+            $type = 3;
         }
         //赠送金额
         //$givemoney = $this->givemoney($post['price']);
