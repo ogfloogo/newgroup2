@@ -77,12 +77,13 @@ class Goods extends Controller
      */
     public function internetbank()
     {
+        $type = $this->request->param('type',1);
         $this->verifyUser();
         $redis = new Redis();
         $list = $redis->handler()->get("newgroup:internetbank:list");
         if ($list) {
             $list = json_decode($list, true);
-            $is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1, 'type' => ['in', [1, 2]]])->order('id asc')->find();
+            $is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1, 'type' => $type])->order('id asc')->find();
             foreach ($list as $key => $value) {
                 $list[$key]['image'] = format_image($value['image']);
                 $list[$key]['path'] = format_images($value['path']);
