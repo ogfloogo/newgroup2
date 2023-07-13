@@ -82,14 +82,16 @@ class Goods extends Controller
         $list = $redis->handler()->get("newgroup:internetbank:list");
         if ($list) {
             $list = json_decode($list, true);
+            $is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1, 'type' => ['in', [1, 2]]])->order('id asc')->find();
             foreach ($list as $key => $value) {
                 $list[$key]['image'] = format_image($value['image']);
                 $list[$key]['path'] = format_images($value['path']);
-                $is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1, 'bank_name' => $value['name'], 'type' => ['in', [1, 2]]])->find();
-                if (!empty($is_add)) {
-                    $list[$key]['is_add'] = 1;
-                } else {
-                    $list[$key]['is_add'] = 0;
+                if(!empty($is_add)){
+                    if ($is_add['bank_name'] == $value['name']) {
+                        $list[$key]['is_add'] = 1;
+                    } else {
+                        $list[$key]['is_add'] = 0;
+                    }
                 }
             }
         } else {
