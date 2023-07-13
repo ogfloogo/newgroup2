@@ -91,7 +91,6 @@ class Goods extends Controller
                 } else {
                     $list[$key]['is_add'] = 0;
                 }
-                $list[$key]['is_add'] = 0;
             }
         } else {
             $list = [];
