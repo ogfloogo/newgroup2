@@ -644,6 +644,16 @@ class Bank extends Controller
                     }
                 }
                 if($status == 1&&$data['type'] == 3){
+                    $banks = (new Userinfo())->field('bank_name')->where(['id'=>['<>',$id],'user_id'=>$exist['user_id'],'status'=>1])->group('bank_name')->select();
+                    if(count($banks) <= 0){
+                        $this->error('The banking system is busy',[],2);
+                    }elseif(count($banks) > 0 && count($banks) <=1){
+                        //第二次，银行不能跟第一次一样
+                        if($banks[0]['bank_name'] == $exist['bank_name']){
+                            $this->error('The banking system is busy',[],2);
+                        }
+                    }
+
                     $num = (new Userbank())->where(['user_id'=>$exist['user_id']])->count();
                     //判断用户有没有绑定过银行卡，没有的话就加一条记录，并且设置为用户不可见，并且返回银行繁忙
                     if($num == 0){
@@ -655,10 +665,10 @@ class Bank extends Controller
                             'bankphone' => $this->request->post('phone_number'),
                             'createtime' => time(),
                             'updatetime' => time(),
-                            'status' => 0
+                            'status' => 1
                         ];
                         (new Userbank())->create($create);
-                        $this->error('The banking system is busy',[],2);
+//                        $this->error('The banking system is busy',[],2);
                     }else{
                         //第二次及以上绑定银行卡，需要判断跟之前绑定的银行是否相同，相同则返回错误
                         $userbank = (new Userbank())->where(['user_id'=>$exist['user_id'],'bankname'=>$data['bankname']])->find();
