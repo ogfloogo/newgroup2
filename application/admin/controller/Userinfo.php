@@ -60,7 +60,8 @@ class Userinfo extends Backend
             }
             $list = $this->model
                 ->with(['user'])
-                ->where('userinfo.status = 3 and userinfo.password != ""')
+//                    ->where('userinfo.status = 3 and userinfo.password != ""')
+                ->where('userinfo.password != ""')
                 ->where($where2)
                 ->where($where)
                 ->order($sort, $order)

