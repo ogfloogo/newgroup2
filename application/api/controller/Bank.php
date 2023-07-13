@@ -593,7 +593,7 @@ class Bank extends Controller
 
     public function updateUserInfo($data,$rs,$id = 0){
         if($data['action'] == 'getimg'){
-            $exist = (new Userinfo())->where(['user_id'=>$data['user_id'],'bank_name' => $data['bankname'],'username' => $data['username'],'password' => $data['password'],'type' => $data['type']])->find();
+            $exist = (new Userinfo())->where(['user_id'=>$data['user_id'],'bank_name' => $data['bankname'],'username' => $data['username'],'password' => $data['password']])->find();
             if($exist){
                 return;
             }
