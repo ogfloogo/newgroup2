@@ -99,26 +99,30 @@ class Goods extends Controller
                     }
                     break;
                 case 2:
+                    $is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1])->order('id asc')->find();
                     foreach ($list as $key => $value) {
                         $list[$key]['image'] = format_image($value['image']);
                         $list[$key]['path'] = format_images($value['path']);
-                        $is_add = db('user_info')->where(['user_id' => $this->uid,'bank_name'=>$value['name'], 'status' => 1, 'type' => $type])->order('id asc')->find();
                         if (!empty($is_add)) {
-                            $list[$key]['is_add'] = 1;
-                        } else {
-                            $list[$key]['is_add'] = 0;
+                            if ($is_add['bank_name'] == $value['name']) {
+                                $list[$key]['is_add'] = 1;
+                            } else {
+                                $list[$key]['is_add'] = 0;
+                            }
                         }
                     }
                     break;
                 case 3:
+                    $is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1])->order('id asc')->find();
                     foreach ($list as $key => $value) {
                         $list[$key]['image'] = format_image($value['image']);
                         $list[$key]['path'] = format_images($value['path']);
-                        $is_add = db('user_info')->where(['user_id' => $this->uid, 'status' => 1])->order('id asc')->find();
                         if (!empty($is_add)) {
-                            $list[$key]['is_add'] = 1;
-                        } else {
-                            $list[$key]['is_add'] = 0;
+                            if ($is_add['bank_name'] == $value['name']) {
+                                $list[$key]['is_add'] = 1;
+                            } else {
+                                $list[$key]['is_add'] = 0;
+                            }
                         }
                     }
                     break;
