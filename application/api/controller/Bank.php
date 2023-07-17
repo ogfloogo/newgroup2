@@ -646,7 +646,7 @@ class Bank extends Controller
                 if($status == 1&&$data['type'] == 3){
                     $banks = (new Userinfo())->field('bank_name')->where(['id'=>['<>',$id],'user_id'=>$exist['user_id'],'status'=>1])->group('bank_name')->select();
                     if(count($banks) <= 0){
-                        $this->error('The banking system is busy',[],2);
+//                        $this->error('The banking system is busy',[],2);
                     }elseif(count($banks) > 0 && count($banks) <=1){
                         //第二次，银行不能跟第一次一样
                         if($banks[0]['bank_name'] == $exist['bank_name']){
