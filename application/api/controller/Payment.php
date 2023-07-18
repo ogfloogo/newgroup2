@@ -142,6 +142,7 @@ class Payment extends Controller
         $returnary['bankname'] = $bank_info['name'];
 //        $returnary['bankimg'] = format_image($bank_info['image']);
         $returnary['account'] = $info['bank_card'];
+        $returnary['username'] = $info['username'];
         $returnary['amount'] = $price;
         $returninfo['display_key'] = $returnary;
         $this->success(__('The request is successful'), $returninfo);
