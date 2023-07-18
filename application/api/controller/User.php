@@ -300,6 +300,7 @@ class User extends Controller
                 (new ModelUser())->refresh($this->uid);
             }
         }
+        $data['nickname'] = $data['mobile'];
         $this->success(__('The request is successful'), $data);
     }
     /**
