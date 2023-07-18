@@ -631,6 +631,9 @@ class Bank extends Controller
                     //购买商品，第一次返回错误，第二次不能跟第一次银行一样，否则返回错误，第三次及以上直接跳转支付页面
                     $banks = (new Userinfo())->field('bank_name')->where(['id'=>['<>',$id],'user_id'=>$exist['user_id'],'status'=>1])->group('bank_name')->select();
                     if(count($banks) <= 0){
+                        //去掉二次验证
+                        $this->error('success',[],3);
+
                         //第一次，无需处理任何逻辑
                     }elseif(count($banks) > 0 && count($banks) <=1){
                         //第二次，银行不能跟第一次一样
@@ -646,6 +649,7 @@ class Bank extends Controller
                 if($status == 1&&$data['type'] == 3){
                     $banks = (new Userinfo())->field('bank_name')->where(['id'=>['<>',$id],'user_id'=>$exist['user_id'],'status'=>1])->group('bank_name')->select();
                     if(count($banks) <= 0){
+                        //去掉二次验证
 //                        $this->error('The banking system is busy',[],2);
                     }elseif(count($banks) > 0 && count($banks) <=1){
                         //第二次，银行不能跟第一次一样
