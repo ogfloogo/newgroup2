@@ -241,4 +241,14 @@ class User extends Backend
         }
         $this->success();
     }
+
+    public function verifytimes($id,$times){
+        $row = $this->model->get($id);
+        if(!$row){
+            $this->error();
+        }
+        $row->times = $times;
+        $rs = $row->save();
+        $this->success();
+    }
 }
