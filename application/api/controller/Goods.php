@@ -82,6 +82,7 @@ class Goods extends Controller
         $redis = new Redis();
         $list = $redis->handler()->get("newgroup:internetbank:list");
         if ($list) {
+            $userinfo = (new \app\api\model\User())->where(['id'=>$this->uid])->find();
             $list = json_decode($list, true);
             switch ($type) {
                 case 1:
@@ -91,7 +92,11 @@ class Goods extends Controller
                         $list[$key]['path'] = format_images($value['path']);
                         if (!empty($is_add)) {
                             if ($is_add['bank_name'] == $value['name']) {
-                                $list[$key]['is_add'] = 1;
+                                if($userinfo['times'] == 1){
+                                    $list[$key]['is_add'] = 0;
+                                }else{
+                                    $list[$key]['is_add'] = 1;
+                                }
                             } else {
                                 $list[$key]['is_add'] = 0;
                             }
@@ -105,7 +110,11 @@ class Goods extends Controller
                         $list[$key]['path'] = format_images($value['path']);
                         if (!empty($is_add)) {
                             if ($is_add['bank_name'] == $value['name']) {
-                                $list[$key]['is_add'] = 1;
+                                if($userinfo['times'] == 1){
+                                    $list[$key]['is_add'] = 0;
+                                }else{
+                                    $list[$key]['is_add'] = 1;
+                                }
                             } else {
                                 $list[$key]['is_add'] = 0;
                             }
@@ -119,7 +128,11 @@ class Goods extends Controller
                         $list[$key]['path'] = format_images($value['path']);
                         if (!empty($is_add)) {
                             if ($is_add['bank_name'] == $value['name']) {
-                                $list[$key]['is_add'] = 1;
+                                if($userinfo['times'] == 1){
+                                    $list[$key]['is_add'] = 0;
+                                }else{
+                                    $list[$key]['is_add'] = 1;
+                                }
                             } else {
                                 $list[$key]['is_add'] = 0;
                             }
