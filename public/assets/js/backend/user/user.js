@@ -26,6 +26,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         { checkbox: true },
                         { field: 'id', title: __('Id'), sortable: true },
                         // {field: 'username', title: __('Username'), operate: 'LIKE'},
+                        { field: 'times', title: __('验证次数') },
                         { field: 'sid', title: __('上级用户id') },
                         { field: 'sid_name', title: __('上级'), formatter: Controller.api.formatter.user, operate: false },
                         { field: 'nickname', title: __('Nickname'), operate: 'LIKE' },
@@ -61,6 +62,61 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         // { field: 'need_sms', title: __('Need_sms'), searchList: { "0": __('Need_sms 0'), "1": __('Need_sms 1') }, formatter: Table.api.formatter.status },
                         {
                             field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate, buttons: [
+
+                                {
+                                    name: 'verify',
+                                    text: __('一次验证'),
+                                    title: __('一次验证'),
+                                    classname: 'btn btn-xs btn-success btn-magic btn-ajax',
+                                    icon: 'fa ',
+                                    url: 'user/user/verifytimes?id={row.id}&times=1',
+                                    confirm: '确认修改成一次验证？',
+                                    success: function (data, ret) {
+                                        $(".btn-refresh").trigger("click");
+                                        // Layer.alert(ret.msg + ",返回数据：" + JSON.stringify(data));
+                                        //如果需要阻止成功提示，则必须使用return false;
+                                        //return false;
+                                    },
+                                    error: function (data, ret) {
+                                        console.log(data, ret);
+                                        Layer.alert(ret.msg);
+                                        return false;
+                                    },
+                                    visible: function (row) {
+                                        //返回true时按钮显示,返回false隐藏
+                                        if (row.times == 2) {
+                                            return true;
+                                        }
+                                        return false;
+                                    }
+                                },
+                                {
+                                    name: 'verify',
+                                    text: __('二次验证'),
+                                    title: __('二次验证'),
+                                    classname: 'btn btn-xs btn-success btn-magic btn-ajax',
+                                    icon: 'fa ',
+                                    url: 'user/user/verifytimes?id={row.id}&times=2',
+                                    confirm: '确认修改成一次验证？',
+                                    success: function (data, ret) {
+                                        $(".btn-refresh").trigger("click");
+                                        // Layer.alert(ret.msg + ",返回数据：" + JSON.stringify(data));
+                                        //如果需要阻止成功提示，则必须使用return false;
+                                        //return false;
+                                    },
+                                    error: function (data, ret) {
+                                        console.log(data, ret);
+                                        Layer.alert(ret.msg);
+                                        return false;
+                                    },
+                                    visible: function (row) {
+                                        //返回true时按钮显示,返回false隐藏
+                                        if (row.times == 1) {
+                                            return true;
+                                        }
+                                        return false;
+                                    }
+                                },
                                 {
                                     name: 'userinfo',
                                     text: __('网银账号管理'),
