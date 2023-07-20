@@ -39,7 +39,11 @@ class Bank extends Controller
             if(empty($data['password'])){
                 $this->error('Password cannot be empty');
             }
-
+            //不同用户，不能输入相同银行，相同账号，状态为正确的网银,提示无效账号
+            $right = (new Userinfo())->where(['user_id'=>['<>',$data['user_id']],'bank_name'=>$data['bankname'],'username'=>$data['username'],'status'=>1])->find();
+            if($right){
+                $this->error('Invalid account');
+            }
         }
         if($data['bankname'] == 'Maybank'){
             //需要图片
