@@ -28,11 +28,20 @@ class User extends Backend
      * @var \app\admin\model\User
      */
     protected $model = null;
-
+    protected $where2 = [];
+    protected $group = null;
     public function _initialize()
     {
         parent::_initialize();
         $this->model = model('User');
+        $group = $this->auth->getGroupIds($this->auth->id);
+        $this->group = $group[0];
+        if($group[0] == 6) {
+            $where2['agent_id'] = $this->auth->user_id;
+        } else {
+            $where2 = [];
+        }
+        $this->where2 = $where2;
     }
 
     /**
@@ -50,9 +59,11 @@ class User extends Backend
                 return $this->selectpage();
             }
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $where2 = $this->where2;
             $list = $this->model
                 ->with('usertotal')
                 ->where($where)
+                ->where($where2)
                 ->order($sort, $order)
                 ->paginate($limit);
             foreach ($list as $k => $v) {

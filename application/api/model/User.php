@@ -2,6 +2,7 @@
 
 namespace app\api\model;
 
+use app\common\model\Admin;
 use function EasyWeChat\Kernel\Support\get_client_ip;
 
 use app\api\controller\Shell;
@@ -233,6 +234,7 @@ class User extends Model
                 $invite_info = $this->where('invite_code', $post['invite_code'])->find();
                 if ($invite_info) {
                     $sid = $invite_info['id'];
+                    $agent_id = $sid;
                     //邀请人数统计
                     (new Usertotal())->where('user_id', $sid)->setInc('invite_number', 1);
                 }
@@ -257,6 +259,7 @@ class User extends Model
                 'updatetime' => time(), //更新时间
                 'agent_id' => $agent_id, //agent_id
                 'token' => $token,
+                'is_agent' => !empty($post['is_agent']) ? $post['is_agent'] : 0,
             ];
             $user_id = $this->insertGetId($insert);
             //分表资金记录

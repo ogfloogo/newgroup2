@@ -1,0 +1,103 @@
+<form id="add-form" class="form-horizontal form-ajax" role="form" data-toggle="validator" method="POST" action="">
+    {:token()}
+
+
+<!--    <div class="form-group">-->
+<!--        <label for="email" class="control-label col-xs-12 col-sm-2">{:__('Email')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input type="email" class="form-control" id="email" name="row[email]" value="" data-rule="required;email" />-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('选择国家')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input id="c-country_id" data-rule="required" data-source="sys/country/index" data-params='{"custom[status]":"1"}'  data-field="cn_name" class="form-control selectpage" name="row[country_id]" type="text" value="">-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="form-group">
+        <label for="mobile" class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('Mobile')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" class="form-control" id="mobile" name="row[mobile]" value="" data-rule="required"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="nickname" class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('Nickname')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="text" class="form-control" id="nickname" name="row[nickname]" autocomplete="off" value="" data-rule="required" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password" class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('Password')}:</label>
+        <div class="col-xs-12 col-sm-8">
+            <input type="password" class="form-control" id="password" name="row[password]" autocomplete="new-password" value="" data-rule="required;password" />
+        </div>
+    </div>
+
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('type')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            {:build_radios('row[type]', ['1'=>__('type 1'), '2'=>__('type 2')])}-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('is_gift')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            {:build_radios('row[is_gift]', ['0'=>__('is_gift 0'), '1'=>__('is_gift 1')])}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('is_updown')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            {:build_radios('row[is_updown]', ['0'=>__('is_updown 0'), '1'=>__('is_updown 1')])}-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('is_return')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            {:build_radios('row[is_return]', ['0'=>__('is_return 0'), '1'=>__('is_return 1')])}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('is_commission')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            {:build_radios('row[is_commission]', ['0'=>__('is_commission 0'), '1'=>__('is_commission 1')])}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="form-group">-->
+<!--        <label class="control-label col-xs-12 col-sm-2"><span style="color: red">*</span>{:__('is_bank')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            {:build_radios('row[is_bank]', ['0'=>__('is_bank 0'), '1'=>__('is_bank 1')])}-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+<!--    <div class="form-group">-->
+<!--        <label for="whatsapp" class="control-label col-xs-12 col-sm-2">{:__('Whatsapp')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input type="text" class="form-control" id="whatsapp" name="row[whatsapp]" value=""/>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="whatsapp_group" class="control-label col-xs-12 col-sm-2">{:__('Telegram')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input type="text" class="form-control" id="whatsapp_group" name="row[whatsapp_group]" value=""/>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="whatsapp_group" class="control-label col-xs-12 col-sm-2">{:__('在线客服')}:</label>-->
+<!--        <div class="col-xs-12 col-sm-8">-->
+<!--            <input type="text" class="form-control" id="service_online" name="row[service_online]" value=""/>-->
+<!--        </div>-->
+<!--    </div>-->
+    <div class="form-group hidden layer-footer">
+        <label class="control-label col-xs-12 col-sm-2"></label>
+        <div class="col-xs-12 col-sm-8">
+            <button type="submit" class="btn btn-primary btn-embossed disabled">{:__('OK')}</button>
+            <button type="reset" class="btn btn-default btn-embossed">{:__('Reset')}</button>
+        </div>
+    </div>
+</form>

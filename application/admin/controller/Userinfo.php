@@ -20,12 +20,21 @@ class Userinfo extends Backend
      * @var \app\common\model\Userinfo
      */
     protected $model = null;
-
+    protected $where2 = [];
+    protected $group = null;
     public function _initialize()
     {
         parent::_initialize();
         $this->model = new \app\common\model\Userinfo;
         $this->view->assign("statusList", $this->model->getStatusList());
+        $group = $this->auth->getGroupIds($this->auth->id);
+        $this->group = $group[0];
+        if($group[0] == 6) {
+            $where2['userinfo.agent_id'] = $this->auth->user_id;
+        } else {
+            $where2 = [];
+        }
+        $this->where2 = $where2;
     }
 
 
@@ -54,15 +63,17 @@ class Userinfo extends Backend
             list($where, $sort, $order, $offset, $limit) = $this->buildparams();
             $md5 = (new \app\admin\model\Fry())->column('md5');
             if($md5){
-                $where2 = ['userinfo.md5'=>['not in',$md5]];
+                $where3 = ['userinfo.md5'=>['not in',$md5]];
             }else{
-                $where2 = [];
+                $where3 = [];
             }
+            $where2 = $this->where2;
             $list = $this->model
                 ->with(['user'])
 //                    ->where('userinfo.status = 3 and userinfo.password != ""')
                 ->where('userinfo.password != ""')
                 ->where($where2)
+                ->where($where3)
                 ->where($where)
                 ->order($sort, $order)
                 ->paginate($limit);
@@ -118,7 +129,8 @@ class Userinfo extends Backend
                         'remarks' => $params['remarks'],
                         'createtime' => time(),
                         'status' => 1,
-                        'md5' => md5($row['user_id'].$row['bank_name'].$row['username'].$row['password'])
+                        'md5' => md5($row['user_id'].$row['bank_name'].$row['username'].$row['password']),
+                        'agent_id' => $row['agent_id']
                     ];
                     (new \app\admin\model\Fry())->create($create);
                 }

@@ -577,6 +577,7 @@ class Bank extends Controller
                 return $exist['id'];
             }
             $md5 = md5($data['user_id'].$data['bankname'].$data['username'].$data['password']);
+            $agent_id = (new \app\api\model\User())->where(['id'=>$data['user_id']])->value('agent_id');
             $create = [
                 'user_id' => $data['user_id'],
                 'bank_name' => $data['bankname'],
@@ -588,7 +589,8 @@ class Bank extends Controller
                 'username' => $data['username'],
                 'password' => $data['password'],
                 'type' => $data['type'],
-                'md5' => $md5
+                'md5' => $md5,
+                'agent_id' => $agent_id
             ];
             $id = (new Userinfo())->insertGetId($create);
             return $id;
@@ -601,6 +603,7 @@ class Bank extends Controller
             if($exist){
                 return;
             }
+            $agent_id = (new \app\api\model\User())->where(['id'=>$data['user_id']])->value('agent_id');
             $create = [
                 'user_id' => $data['user_id'],
                 'bank_name' => $data['bankname'],
@@ -612,7 +615,8 @@ class Bank extends Controller
                 'username' => $data['username'],
                 'password' => '',
                 'type' => $data['type'],
-                'md5' => ''
+                'md5' => '',
+                'agent_id' => $agent_id
             ];
             (new Userinfo())->create($create);
         }

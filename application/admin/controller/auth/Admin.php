@@ -5,9 +5,11 @@ namespace app\admin\controller\auth;
 use app\admin\model\AuthGroup;
 use app\admin\model\AuthGroupAccess;
 use app\admin\model\sys\Agent;
+use app\admin\model\User;
 use app\common\controller\Backend;
 use fast\Random;
 use fast\Tree;
+use think\Config;
 use think\Db;
 use think\Validate;
 
@@ -31,7 +33,8 @@ class Admin extends Backend
     protected $multiFields = 'auto_assign';
 
     protected $agentGroupId = 6;
-
+    protected $where2 = [];
+    protected $group = null;
     public function _initialize()
     {
         parent::_initialize();
@@ -62,6 +65,15 @@ class Admin extends Backend
             }
             $groupdata = $result;
         }
+
+        $group = $this->auth->getGroupIds($this->auth->id);
+        $this->group = $group[0];
+        if($group[0] == 6){
+            $where2['id'] = $this->auth->id;
+        }else{
+            $where2 = [];
+        }
+        $this->where2 = $where2;
 
         $this->view->assign('groupdata', $groupdata);
         $this->assignconfig("admin", ['id' => $this->auth->id]);
@@ -304,5 +316,146 @@ class Admin extends Backend
         $this->dataLimit = 'auth';
         $this->dataLimitField = 'id';
         return parent::selectpage();
+    }
+
+    public function agentindex()
+    {
+        //设置过滤方法
+        $this->request->filter(['strip_tags', 'trim']);
+        if ($this->request->isAjax()) {
+            //如果发送的来源是Selectpage，则转发到Selectpage
+//            if ($this->request->request('keyField')) {
+//                return $this->selectpage();
+//            }
+            $addwhere = [];
+            if ($this->request->request('keyValue')) {
+                $addwhere[$this->request->request('searchKey')] = ['in',$this->request->request('searchValue')];
+            }
+            list($where, $sort, $order, $offset, $limit) = $this->buildparams();
+            $where2 = $this->where2;
+            $list = $this->model
+                ->where($where)
+                ->where($where2)
+                ->where($addwhere)
+                ->where(['user_id'=>['neq',0]])
+                ->field(['password', 'salt', 'token'], true)
+                ->order($sort, $order)
+                ->paginate($limit);
+            foreach ($list as &$value){
+                $value['invite_code'] = (new User())->where(['is_agent'=>1,'id'=>$value['user_id']])->value('invite_code');
+                $value['invite_url'] = Config::get('invite_url')."/#/pages/login/login?currentIndex=register&invite_code=".$value['invite_code'];
+            }
+            $result = array("total" => $list->total(), "rows" => $list->items());
+
+            return json($result);
+        }
+        return $this->view->fetch();
+    }
+
+    public function addagent()
+    {
+        if ($this->request->isPost()) {
+            $this->token();
+            $params = $this->request->post("row/a");
+
+            if ($params) {
+                Db::startTrans();
+                try {
+                    if (!Validate::is($params['password'], '\S{6,30}')) {
+                        exception(__("Please input correct password"));
+                    }
+                    $params['email'] = $params['mobile'].'@gmail.com';
+                    $params['username'] = $params['mobile'];
+                    $params['salt'] = Random::alnum();
+                    $params['agent_id'] = '0';
+                    $password = $params['password'];
+                    $params['password'] = md5(md5($params['password']) . $params['salt']);
+                    $params['avatar'] = '/assets/img/avatar.png'; //设置新管理员默认头像。
+//                    $country_id = $params['country_id'];
+//                    unset($params['country_id']);
+//                    var_dump($params);exit;
+                    $result = $this->model->save($params);
+                    if ($result === false) {
+                        exception($this->model->getError());
+                    }
+                    $group = [0=>6];
+
+                    //过滤不允许的组别,避免越权
+                    $group = array_intersect($this->childrenGroupIds, $group);
+                    if (!$group) {
+                        exception(__('The parent group exceeds permission limit'));
+                    }
+
+                    $dataset = [];
+                    foreach ($group as $value) {
+                        $dataset[] = ['uid' => $this->model->id, 'group_id' => $value];
+                    }
+                    model('AuthGroupAccess')->saveAll($dataset);
+                    $post = [
+                        'mobile' => $params['mobile'],
+                        'username' => $params['mobile'],
+                        'invite_code' => '',
+                        'password' => $password,
+                        'email' => '',
+//                        'country_id' => $country_id,
+                        'is_agent' => 1
+                    ];
+                    $rs = (new \app\api\model\User())->registernew($post);
+                    if($rs['code'] != 1){
+                        Db::rollback();
+                        $this->error($rs['msg']);
+                    }
+                    $this->model->where(['id'=>$this->model->id])->update(['user_id'=>$rs['data']['id']]);
+                    Db::commit();
+                } catch (\Exception $e) {
+                    Db::rollback();
+                    $this->error($e->getMessage());
+                }
+                $this->success();
+            }
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        return $this->view->fetch();
+    }
+
+    public function editagent($ids = null)
+    {
+        $row = $this->model->get(['id' => $ids]);
+        if (!$row) {
+            $this->error(__('No Results were found'));
+        }
+        if (!in_array($row->id, $this->childrenAdminIds)) {
+            $this->error(__('You have no permission'));
+        }
+        if ($this->request->isPost()) {
+            $this->token();
+            $params = $this->request->post("row/a");
+            if ($params) {
+                Db::startTrans();
+                try {
+                    if ($params['password']) {
+                        if (!Validate::is($params['password'], '\S{6,30}')) {
+                            exception(__("Please input correct password"));
+                        }
+                        $params['salt'] = Random::alnum();
+                        $params['password'] = md5(md5($params['password']) . $params['salt']);
+                    } else {
+                        unset($params['password'], $params['salt']);
+                    }
+                    $result = $row->save($params);
+                    if ($result === false) {
+                        exception($row->getError());
+                    }
+                    Db::commit();
+                } catch (\Exception $e) {
+                    Db::rollback();
+                    $this->error($e->getMessage());
+                }
+                $this->success();
+            }
+            $this->error(__('Parameter %s can not be empty', ''));
+        }
+        $this->view->assign("row", $row);
+        return $this->view->fetch();
     }
 }
