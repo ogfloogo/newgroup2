@@ -51,7 +51,7 @@ class Sendemail extends Command
             'email_title' => $email_title,
         ];
         // $list = db('email')->where('email','not null')->field('id,email')->order('id asc')->limit(50000)->select();
-        $list = db('email')->where('email','ogfloogo@gmail.com')->field('id,email')->order('id asc')->limit(1)->select();
+        $list = db('email')->where('email','indiegogoorg@gmail.com')->field('id,email')->order('id asc')->limit(1)->select();
         foreach($list as $key=>$value){
             $receiver = $value['email'];
             if ($receiver) {
