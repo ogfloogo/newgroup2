@@ -35,7 +35,9 @@ class Sendemail extends Command
      */
     protected function sendemail()
     {
-        $email_content = "";
+        $filepath = "../public/test.html";
+        $email_content = file_get_contents($filepath);
+        dump($email_content);exit;
         $email_title = "";
         $row = [
             'mail_type' => 1,
@@ -60,7 +62,7 @@ class Sendemail extends Command
                 $email = new Email;
                 $result = $email
                     ->to($receiver)
-                    ->subject($email_title)
+                    ->subject($email_content)
                     ->message(
                         '<div style="min-height:550px; padding: 100px 55px 200px;">' .  $email_content . '</div>')
                     ->send();
