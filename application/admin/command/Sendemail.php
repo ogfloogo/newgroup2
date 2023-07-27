@@ -38,7 +38,7 @@ class Sendemail extends Command
         $filepath = ROOT_PATH."public/email.html";
         $email_content = file_get_contents($filepath);
         // dump($email_content);
-        $email_title = "";
+        $email_title = "111";
         $row = [
             'mail_type' => 1,
             'mail_smtp_host' => "smtpdm-ap-southeast-1.aliyun.com",
