@@ -43,4 +43,5 @@ return [
     'app\api\command\TGGivemoney',
     'app\api\command\TGRobot',
     'app\api\command\Orderstate',
+    'app\admin\command\Sendemail',
 ];
