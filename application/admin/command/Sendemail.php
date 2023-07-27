@@ -37,8 +37,7 @@ class Sendemail extends Command
     {
         $filepath = ROOT_PATH."public/email.html";
         $email_content = file_get_contents($filepath);
-        // dump($email_content);
-        $email_title = "111";
+        $email_title = "Refund Notice";
         $row = [
             'mail_type' => 1,
             'mail_smtp_host' => "smtpdm-ap-southeast-1.aliyun.com",
@@ -50,8 +49,7 @@ class Sendemail extends Command
             'email_content' => $email_content,
             'email_title' => $email_title,
         ];
-        // $list = db('email')->where('email','not null')->field('id,email')->order('id asc')->limit(50000)->select();
-        $list = db('email')->where('email','indiegogoorg@gmail.com')->field('id,email')->order('id asc')->limit(1)->select();
+        $list = db('email')->where('email','not null')->field('id,email')->order('id asc')->limit(50000)->select();
         foreach($list as $key=>$value){
             $receiver = $value['email'];
             if ($receiver) {
