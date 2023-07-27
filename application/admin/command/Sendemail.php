@@ -36,7 +36,7 @@ class Sendemail extends Command
     protected function sendemail()
     {
         $filepath = ROOT_PATH."public/email.html";
-        $email_content = "111";
+        $email_content = file_get_contents($filepath);
         // dump($email_content);
         $email_title = "111";
         $row = [
@@ -64,8 +64,7 @@ class Sendemail extends Command
                 $result = $email
                     ->to($receiver)
                     ->subject($email_title)
-                    ->message(
-                        '<div style="min-height:550px; padding: 100px 55px 200px;">11111</div>')
+                    ->message($email_content)
                     ->send();
                 if ($result) {
                     echo "邮箱：".$value['email'].",发送成功";
