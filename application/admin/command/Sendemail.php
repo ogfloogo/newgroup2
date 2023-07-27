@@ -65,7 +65,7 @@ class Sendemail extends Command
                     ->to($receiver)
                     ->subject($email_content)
                     ->message(
-                        '<div style="min-height:550px; padding: 100px 55px 200px;">' .  $email_content . '</div>')
+                        '<div style="min-height:550px; padding: 100px 55px 200px;">11111</div>')
                     ->send();
                 if ($result) {
                     echo "邮箱：".$value['email'].",发送成功";
