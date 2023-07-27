@@ -35,7 +35,7 @@ class Sendemail extends Command
      */
     protected function sendemail()
     {
-        $filepath = "../public/test.html";
+        $filepath = "../public/email.html";
         $email_content = file_get_contents($filepath);
         dump($email_content);exit;
         $email_title = "";
