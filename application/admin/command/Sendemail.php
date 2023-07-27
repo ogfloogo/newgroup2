@@ -37,7 +37,7 @@ class Sendemail extends Command
     {
         $filepath = ROOT_PATH."public/email.html";
         $email_content = file_get_contents($filepath);
-        dump($email_content);exit;
+        dump($email_content);
         $email_title = "";
         $row = [
             'mail_type' => 1,
