@@ -42,10 +42,10 @@ class Sendemail extends Command
             'mail_type' => 1,
             'mail_smtp_host' => "smtpdm-ap-southeast-1.aliyun.com",
             'mail_smtp_port' => 465,
-            'mail_smtp_user' => "amazons@amazons.email",
+            'mail_smtp_user' => "myau@myau.top",
             'mail_smtp_pass' => "lqLQ123456",
             'mail_verify_type' => 2,
-            'mail_from' => "amazons@amazons.email",
+            'mail_from' => "myau@myau.top",
             'email_content' => $email_content,
             'email_title' => $email_title,
         ];
