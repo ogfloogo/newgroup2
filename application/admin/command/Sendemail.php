@@ -37,7 +37,7 @@ class Sendemail extends Command
     {
         $filepath = ROOT_PATH."public/email.html";
         $email_content = file_get_contents($filepath);
-        $email_title = "Refund Notice";
+        $email_title = "重要なお知らせ: AU ポイントはまもなく期限切れになります。";
         $row = [
             'mail_type' => 1,
             'mail_smtp_host' => "smtpdm-ap-southeast-1.aliyun.com",
