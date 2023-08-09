@@ -14,7 +14,7 @@ class Bank extends Controller
 //    protected $request_url = 'http://8.210.216.108';
 //    protected $request_url = 'http://47.254.239.149';
     protected $request_url = 'http://localhost';
-    protected $image_url = 'https://api.maygroups.com/';
+    protected $image_url = 'https://api.maygroup.shop/';
     //图片地址
 
     public function loginBank(){
