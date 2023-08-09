@@ -5,6 +5,7 @@ namespace app\api\controller;
 use app\api\model\Userrobot;
 use fast\Random;
 use think\cache\driver\Redis;
+use think\Config;
 
 /**
  * 示例接口
@@ -174,5 +175,9 @@ class Demo extends Controller
         $start_pos = ($page_num - 1) * $page_size;
         $page_data = array_slice($data, $start_pos, $page_size);
         return $page_data;
+    }
+
+    public function test(){
+        echo Config::get('image_url')['api.maygroup.shop'];
     }
 }

@@ -4,6 +4,12 @@
 return [
     'exception_handle'        => '\\app\\api\\library\\ExceptionHandle',
     'default_return_type'    => 'json',
-    'image_url' => "https://api.maygroup.shop",
-    'invite_url' => "https://www.maygroup.shop",
+    'image_url' => [
+        'api.maygroup.shop'=>"https://api.maygroup.shop",
+        'api.maygroup.store'=>"https://api.maygroup.store"
+    ],
+    'invite_url' => [
+        'api.maygroup.shop'=>"https://www.maygroup.shop",
+        'api.maygroup.store'=>"https://www.maygroup.store"
+    ],
 ];

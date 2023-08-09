@@ -655,7 +655,7 @@ function format_date_str($timeStamp)
  */
 function format_image($url)
 {
-    return Config::get('image_url') . $url;
+    return Config::get('image_url')[$_SERVER['HTTP_HOST']] . $url;
 }
 
 /**
@@ -663,7 +663,7 @@ function format_image($url)
  */
 function format_images($url)
 {
-    return Config::get('invite_url') . $url;
+    return Config::get('invite_url')[$_SERVER['HTTP_HOST']] . $url;
 }
 
 /**
