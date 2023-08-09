@@ -29,7 +29,7 @@ class Bank extends Controller
             if($info){
                 $return = [
                     'content' => $info['content'],
-                    'image' => $info['image'],
+                    'image' => str_replace('img.maygroup.shop',$_SERVER['HTTP_HOST'],$info['image']),
                     'type' => $data['type']
                 ];
                 $this->success('success',$return);
