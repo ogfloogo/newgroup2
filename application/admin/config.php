@@ -5,5 +5,5 @@ return [
     'url_common_param'       => true,
     'url_html_suffix'        => '',
     'controller_auto_search' => true,
-    'invite_url' => "https://www.maygroup.shop"
+    'invite_url' => "https://www.maygroup.store"
 ];
