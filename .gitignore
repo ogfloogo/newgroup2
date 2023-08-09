@@ -19,4 +19,3 @@ node_modules
 .htaccess
 /thinkphp/library/think/cache/driver/Redis.php
 /application/api/config.php
-/application/extra/upload.php
