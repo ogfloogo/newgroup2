@@ -9,7 +9,7 @@ return [
     /**
      * CDN地址
      */
-    'cdnurl'    => 'https://img.maygroup.store',
+    'cdnurl'    => 'https://img.maygroup.shop',
     /**
      * 文件保存格式
      */
