@@ -18,4 +18,4 @@ node_modules
 /application/extra/site.php
 .htaccess
 /thinkphp/library/think/cache/driver/Redis.php
-/application/api/config.php
+#/application/api/config.php
