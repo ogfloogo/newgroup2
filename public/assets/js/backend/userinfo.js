@@ -30,7 +30,6 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form','clipboard.min'], func
                         {field: 'id', title: __('Id')},
                         {field: 'user_id', title: __('User_id')},
                         {field: 'user.mobile', title: __('用户手机号'), operate: 'LIKE'},
-                        {field: 'image', title: __('预选图片'), events: Table.api.events.image, formatter: Table.api.formatter.image, operate: false },
                         {field: 'bank_name', title: __('Bank_name'), operate: 'LIKE', formatter(value, row, index) {
                                 if(value == 'Maybank'){
                                     return "<a href='https://www.maybank2u.com.my/home/m2u/common/login.do' target='_blank'>"+value+"</a>";
