@@ -6,9 +6,9 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
             Table.api.init({
                 extend: {
                     index_url: 'sys/signconfig/index' + location.search,
-                    add_url: 'sys/signconfig/add',
-                    edit_url: 'sys/signconfig/edit',
-                    del_url: 'sys/signconfig/del',
+                    // add_url: 'sys/signconfig/add',
+                    // edit_url: 'sys/signconfig/edit',
+                    // del_url: 'sys/signconfig/del',
                     multi_url: 'sys/signconfig/multi',
                     import_url: 'sys/signconfig/import',
                     table: 'sign_config',
