@@ -20,8 +20,8 @@ class Signin extends Controller
 
     public function index()
     {
-        // $this->verifyUser();
-        $user_id = 154;
+        $this->verifyUser();
+        $user_id = $this->uid;
         $list = (new Signconfig())->order('id asc')->field('id,day,money')->select();
         foreach ($list as &$value) {
             $status = db('sign_log')->where(['user_id' => $user_id, "day" => $value['day']])->field('id')->find();
@@ -56,8 +56,8 @@ class Signin extends Controller
      */
     public function signin()
     {
-        // $this->verifyUser();
-        $user_id = 154;
+        $this->verifyUser();
+        $user_id = $this->uid;
         $signin = db('sign_log')->where(['user_id' => $user_id])->whereTime('createtime', 'today')->count();
         if ($signin) {
             $this->error(__("Signed in"));
