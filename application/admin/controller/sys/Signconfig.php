@@ -54,7 +54,7 @@ class Signconfig extends Backend
         [$where, $sort, $order, $offset, $limit] = $this->buildparams();
         $list = $this->model
             ->where($where)
-            ->order('id desc')
+            ->order('id asc')
             ->paginate($limit);
         $result = ['total' => $list->total(), 'rows' => $list->items()];
         return json($result);
