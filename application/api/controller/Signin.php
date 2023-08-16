@@ -62,7 +62,7 @@ class Signin extends Controller
         if ($signin) {
             $this->error(__("Signed in"));
         }
-        $is_set = db('sign_log')->where(['user_id' => $user_id,'daya'=>1])->order('id desc')->find();
+        $is_set = db('sign_log')->where(['user_id' => $user_id,'day'=>1])->order('id desc')->find();
         if (!empty($is_set)) {
             $arivDate = $is_set['createtime'];
             $depDate = time();
