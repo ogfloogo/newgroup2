@@ -440,7 +440,7 @@ class User extends Model
     public function refresh($user_id)
     {
         $userinfo_news = $this->where('id', $user_id)->find();
-        // $userinfo_news['avatar'] = format_image($userinfo_news['avatar']);
+        $userinfo_news['avatar'] = format_image($userinfo_news['avatar']);
         $redis = new Redis();
         $redis->handler()->select(1);
         $cache = $redis->handler()->get("newgroup:token:" . $userinfo_news['token']);
