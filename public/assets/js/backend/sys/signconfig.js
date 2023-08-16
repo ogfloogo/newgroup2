@@ -7,7 +7,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                 extend: {
                     index_url: 'sys/signconfig/index' + location.search,
                     // add_url: 'sys/signconfig/add',
-                    // edit_url: 'sys/signconfig/edit',
+                    edit_url: 'sys/signconfig/edit',
                     // del_url: 'sys/signconfig/del',
                     multi_url: 'sys/signconfig/multi',
                     import_url: 'sys/signconfig/import',
@@ -28,7 +28,7 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'id', title: __('Id')},
                         {field: 'day', title: __('Day')},
                         {field: 'money', title: __('Money'), operate:'BETWEEN'},
-                        {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
+                        // {field: 'createtime', title: __('Createtime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
                         {field: 'updatetime', title: __('Updatetime'), operate:'RANGE', addclass:'datetimerange', autocomplete:false, formatter: Table.api.formatter.datetime},
                         {field: 'operate', title: __('Operate'), table: table, events: Table.api.events.operate, formatter: Table.api.formatter.operate}
                     ]
