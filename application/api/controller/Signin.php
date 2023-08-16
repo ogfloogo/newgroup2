@@ -20,8 +20,8 @@ class Signin extends Controller
 
     public function index()
     {
-        $this->verifyUser();
-        $user_id = $this->uid;
+        // $this->verifyUser();
+        $user_id = 154;
         $list = (new Signconfig())->order('id asc')->field('id,day,money')->select();
         foreach ($list as &$value) {
             $status = db('sign_log')->where(['user_id' => $user_id, "day" => $value['day']])->field('id')->find();
@@ -31,7 +31,18 @@ class Signin extends Controller
                 $value['is_sign'] = 0;
             }
         }
+        $is_set = db('sign_log')->where(['user_id' => $user_id, 'day' => 1])->order('id desc')->find();
+        if (!empty($is_set)) {
+            $arivDate = $is_set['createtime'];
+            $depDate = time();
+            $datediff = abs($depDate - $arivDate);
+            $day = ceil($datediff / (60 * 60 * 24));
+        } else {
+            $day = 1;
+        }
+
         $return = [
+            'today' => $day,
             'total_money' => db('sign_log')->where(['user_id' => $user_id])->sum('money'),
             'list' => $list
         ];
@@ -45,9 +56,8 @@ class Signin extends Controller
      */
     public function signin()
     {
-        $this->verifyUser();
-        $day = $this->request->post('day');
-        $user_id = $this->uid;
+        // $this->verifyUser();
+        $user_id = 154;
         $signin = db('sign_log')->where(['user_id' => $user_id])->whereTime('createtime', 'today')->count();
         if ($signin) {
             $this->error(__("Signed in"));
