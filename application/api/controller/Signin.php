@@ -42,6 +42,7 @@ class Signin extends Controller
         }
 
         $return = [
+            'is_get' => ($this->userInfo)['is_get_sign_money'],
             'today' => $day,
             'total_money' => db('sign_log')->where(['user_id' => $user_id])->sum('money'),
             'list' => $list
