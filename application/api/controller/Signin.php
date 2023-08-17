@@ -76,13 +76,13 @@ class Signin extends Controller
                 }
                 $money_total = db('sign_log')->where(['user_id' => $user_id])->sum('money');
                 if ($money_total > 0) {
+                    //更新领取状态
+                    db('user')->where(['id' => $user_id])->update(['is_get_sign_money' => 1]);
                     $rs2 = (new Usermoneylog())->moneyrecords($user_id, $money_total, 'inc', 27, "签到奖励");
                     if (!$rs2) {
                         Db::rollback();
                         $this->error(__("operation failure"));
                     }
-                    //更新领取状态
-                    db('user')->where(['id' => $user_id])->update(['is_get_sign_money' => 1]);
                 }
                 $this->success(__("Receive success"));
             }
@@ -106,13 +106,13 @@ class Signin extends Controller
         if ($day == 7) {
             $money_total = db('sign_log')->where(['user_id' => $user_id])->sum('money');
             if ($money_total > 0) {
+                //更新领取状态
+                db('user')->where(['id' => $user_id])->update(['is_get_sign_money' => 1]);
                 $rs2 = (new Usermoneylog())->moneyrecords($user_id, $money_total, 'inc', 27, "签到奖励");
                 if (!$rs2) {
                     Db::rollback();
                     $this->error(__("operation failure"));
                 }
-                //更新领取状态
-                db('user')->where(['id' => $user_id])->update(['is_get_sign_money' => 1]);
             }
         }
         Db::commit();
