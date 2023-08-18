@@ -36,7 +36,7 @@ class Signin extends Controller
             $now = time(); //获取当前时间戳
             $start = strtotime(date('Y-m-d',$is_set['createtime']) . ' 00:00:00'); //获取当年的第一天的时间戳
             $diff = $now - $start; //计算时间差
-            $day = ceil($diff / 86400) + 1; //计算相差多少天并加1，即为今年的第几天
+            $day = ceil($diff / 86400); //计算相差多少天并加1，即为今年的第几天
         } else {
             $day = 1;
         }
