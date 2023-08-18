@@ -65,10 +65,10 @@ class Signin extends Controller
         }
         $is_set = db('sign_log')->where(['user_id' => $user_id, 'day' => 1])->order('id desc')->find();
         if (!empty($is_set)) {
-            $arivDate = $is_set['createtime'];
-            $depDate = time();
-            $datediff = abs($depDate - $arivDate);
-            $day = ceil($datediff / (60 * 60 * 24));
+            $now = time(); //获取当前时间戳
+            $start = strtotime(date('Y-m-d',$is_set['createtime']) . ' 00:00:00'); //获取当年的第一天的时间戳
+            $diff = $now - $start; //计算时间差
+            $day = ceil($diff / 86400); //计算相差多少天并加1，即为今年的第几天
             if ($day > 7) {
                 //是否已经领取
                 $is_get_sign_money = db('user')->where(['id' => $user_id])->value('is_get_sign_money');
