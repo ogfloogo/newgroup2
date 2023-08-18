@@ -117,7 +117,7 @@ class Signin extends Controller
             }
         }
         Db::commit();
-        $this->success(__("operate successfully"));
+        $this->success(__("operate successfully"),$config['money']);
     }
 
 
