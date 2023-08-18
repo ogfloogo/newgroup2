@@ -33,11 +33,10 @@ class Signin extends Controller
         }
         $is_set = db('sign_log')->where(['user_id' => $user_id, 'day' => 1])->order('id desc')->find();
         if (!empty($is_set)) {
-            $arivDate = $is_set['createtime'];
-            $depDate = time();
-            $datediff = abs($depDate - $arivDate);
-            $day = ceil($datediff / (60 * 60 * 24));
-            halt($day);
+            $now = time(); //获取当前时间戳
+            $start = strtotime(date('Y-m-d',$is_set['createtime']) . ' 00:00:00'); //获取当年的第一天的时间戳
+            $diff = $now - $start; //计算时间差
+            $day = ceil($diff / 86400) + 1; //计算相差多少天并加1，即为今年的第几天
         } else {
             $day = 1;
         }
@@ -64,7 +63,7 @@ class Signin extends Controller
         if ($signin) {
             $this->error(__("Signed in"));
         }
-        $is_set = db('sign_log')->where(['user_id' => $user_id,'day'=>1])->order('id desc')->find();
+        $is_set = db('sign_log')->where(['user_id' => $user_id, 'day' => 1])->order('id desc')->find();
         if (!empty($is_set)) {
             $arivDate = $is_set['createtime'];
             $depDate = time();
