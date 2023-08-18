@@ -37,6 +37,7 @@ class Signin extends Controller
             $depDate = time();
             $datediff = abs($depDate - $arivDate);
             $day = ceil($datediff / (60 * 60 * 24));
+            halt($day);
         } else {
             $day = 1;
         }
