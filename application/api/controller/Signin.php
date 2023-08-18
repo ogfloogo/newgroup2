@@ -103,6 +103,7 @@ class Signin extends Controller
             Db::rollback();
             $this->error(__("operation failure"));
         }
+        $return_money = $config['money'];
         //第七天，领奖励
         if ($day == 7) {
             $money_total = db('sign_log')->where(['user_id' => $user_id])->sum('money');
@@ -115,9 +116,10 @@ class Signin extends Controller
                     $this->error(__("operation failure"));
                 }
             }
+            $return_money = $money_total;
         }
         Db::commit();
-        $this->success(__("operate successfully"),$config['money']);
+        $this->success(__("operate successfully"),$return_money);
     }
 
 
