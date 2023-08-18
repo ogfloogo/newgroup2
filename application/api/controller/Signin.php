@@ -85,7 +85,7 @@ class Signin extends Controller
                         $this->error(__("operation failure"));
                     }
                 }
-                $this->success(__("Receive success"));
+                $this->success(__("Receive success"),$money_total);
             }
         } else {
             $day = 1;
